@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI, Actually · Content Dashboard</title>
+<meta property="og:title" content="AI, Actually · Content Dashboard">
+<meta property="og:description" content="Cross-platform content analytics for Daniela Matinho — LinkedIn, YouTube & Medium/Substack">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;500;600&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{--bg:#0f0f13;--surface:#17171e;--surface2:#1f1f28;--border:#2a2a35;--accent:#7c6ef7;--accent2:#f97316;--accent3:#22d3a0;--text:#e8e8f0;--muted:#7a7a90;--li:#0ea5e9;--yt:#ff4444;--med:#f5a623}
+  body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+  header{padding:28px 48px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+  .brand{font-family:'DM Serif Display',serif;font-size:22px;letter-spacing:-.3px}
+  .brand span{color:var(--accent)}
+  .subtitle{font-size:13px;color:var(--muted);margin-top:4px}
+  .updated{font-size:12px;color:var(--muted);background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:5px 14px}
+
+  .main{padding:32px 48px;max-width:1300px;margin:0 auto}
+
+  /* Hero total */
+  .hero{background:linear-gradient(135deg,rgba(124,110,247,.12),rgba(249,115,22,.06));border:1px solid rgba(124,110,247,.25);border-radius:16px;padding:32px 40px;margin-bottom:28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px}
+  .hero-left h2{font-family:'DM Serif Display',serif;font-size:14px;color:var(--muted);font-weight:400;margin-bottom:8px;letter-spacing:.5px;text-transform:uppercase}
+  .hero-total{font-size:52px;font-weight:700;line-height:1;letter-spacing:-1px}
+  .hero-total span{color:var(--accent)}
+  .hero-sub{font-size:13px;color:var(--muted);margin-top:8px}
+  .hero-platforms{display:flex;gap:20px;flex-wrap:wrap}
+  .hero-plat{text-align:center}
+  .hero-plat .val{font-size:22px;font-weight:600}
+  .hero-plat .lbl{font-size:11px;color:var(--muted);margin-top:3px;text-transform:uppercase;letter-spacing:.7px}
+
+  /* Stats */
+  .stats-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}
+  .stats-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}
+  .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px}
+  .stat-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px}
+  .stat-value{font-size:26px;font-weight:600;line-height:1}
+  .stat-sub{font-size:12px;color:var(--muted);margin-top:5px}
+
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px}
+  .card-title{font-size:13px;font-weight:600;margin-bottom:18px;display:flex;align-items:center;gap:8px}
+  .card-title .dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+  canvas{max-height:200px}
+
+  /* Section headings */
+  .section-heading{font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin:28px 0 14px;display:flex;align-items:center;gap:10px}
+  .section-heading::after{content:'';flex:1;height:1px;background:var(--border)}
+
+  /* Insight rows */
+  .insight-row{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
+  .insight-row:last-child{border-bottom:none}
+  .i-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+  .i-text{font-size:13px;line-height:1.5;color:var(--text)}
+  .i-text strong{color:var(--accent)}
+
+  /* Platform badges */
+  .badge{padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600}
+  .badge-li{background:rgba(14,165,233,.15);color:var(--li)}
+  .badge-yt{background:rgba(255,68,68,.15);color:var(--yt)}
+  .badge-med{background:rgba(245,166,35,.15);color:var(--med)}
+
+  /* Footer */
+  footer{text-align:center;padding:32px;border-top:1px solid var(--border);margin-top:40px;color:var(--muted);font-size:12px}
+  footer a{color:var(--accent);text-decoration:none}
+  footer a:hover{text-decoration:underline}
+
+  /* Edit banner (only visible when editing) */
+  .edit-banner{background:rgba(124,110,247,.1);border-bottom:1px solid rgba(124,110,247,.2);padding:10px 48px;font-size:12px;color:var(--accent);display:none;align-items:center;gap:10px}
+  .edit-banner.visible{display:flex}
+
+  @media(max-width:900px){
+    header,.main{padding:20px}
+    .stats-3,.stats-4,.grid-2{grid-template-columns:1fr}
+    .hero{padding:24px}
+    .hero-total{font-size:38px}
+  }
+</style>
+</head>
+<body>
+
+<!-- ── EDIT BANNER (shown when ?edit=1 in URL) ── -->
+<div class="edit-banner" id="edit-banner">
+  ✏️ You are in edit mode — update the DATA object in the HTML source to refresh numbers.
+</div>
+
+<header>
+  <div>
+    <div class="brand">AI, Actually <span>·</span> Content</div>
+    <div class="subtitle">Cross-platform analytics · Daniela Matinho</div>
+  </div>
+  <div class="updated" id="updated-date"></div>
+</header>
+
+<div class="main">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-left">
+      <h2>Total Audience</h2>
+      <div class="hero-total" id="hero-total">—</div>
+      <div class="hero-sub" id="hero-sub"></div>
+    </div>
+    <div class="hero-platforms">
+      <div class="hero-plat">
+        <div class="val" style="color:var(--li)" id="h-li-fol">—</div>
+        <div class="lbl">💼 LinkedIn</div>
+      </div>
+      <div class="hero-plat">
+        <div class="val" style="color:var(--yt)" id="h-yt-subs">—</div>
+        <div class="lbl">▶️ YouTube</div>
+      </div>
+      <div class="hero-plat">
+        <div class="val" style="color:var(--med)" id="h-med-fol">—</div>
+        <div class="lbl">✉️ Medium</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LINKEDIN -->
+  <div class="section-heading"><span>💼</span> LinkedIn</div>
+  <div class="stats-4">
+    <div class="stat-card" style="border-top:2px solid var(--li)">
+      <div class="stat-label">Impressions</div>
+      <div class="stat-value" id="li-imp">—</div>
+      <div class="stat-sub" id="li-imp-sub"></div>
+    </div>
+    <div class="stat-card" style="border-top:2px solid var(--li)">
+      <div class="stat-label">Engagements</div>
+      <div class="stat-value" id="li-eng">—</div>
+      <div class="stat-sub" id="li-eng-sub"></div>
+    </div>
+    <div class="stat-card" style="border-top:2px solid var(--li)">
+      <div class="stat-label">Avg Eng Rate</div>
+      <div class="stat-value" id="li-rate">—</div>
+      <div class="stat-sub">Engagements / impressions</div>
+    </div>
+    <div class="stat-card" style="border-top:2px solid var(--li)">
+      <div class="stat-label">Followers</div>
+      <div class="stat-value" id="li-fol">—</div>
+      <div class="stat-sub" id="li-fol-sub"></div>
+    </div>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:var(--li)"></span>Impressions Over Time</div>
+      <canvas id="c-li-imp"></canvas>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:var(--accent)"></span>Engagement Rate Over Time</div>
+      <canvas id="c-li-eng"></canvas>
+    </div>
+  </div>
+
+  <!-- YOUTUBE -->
+  <div class="section-heading"><span>▶️</span> YouTube</div>
+  <div class="stats-4">
+    <div class="stat-card" style="border-top:2px solid var(--yt)">
+      <div class="stat-label">Total Views</div>
+      <div class="stat-value" id="yt-views">—</div>
+      <div class="stat-sub" id="yt-views-sub"></div>
+    </div>
+    <div class="stat-card" style="border-top:2px solid var(--yt)">
+      <div class="stat-label">Subscribers</div>
+      <div class="stat-value" id="yt-subs">—</div>
+    </div>
+    <div class="stat-card" style="border-top:2px solid var(--yt)">
+      <div class="stat-label">Total Likes</div>
+      <div class="stat-value" id="yt-likes">—</div>
+    </div>
+    <div class="stat-card" style="border-top:2px solid var(--yt)">
+      <div class="stat-label">Total Comments</div>
+      <div class="stat-value" id="yt-comments">—</div>
+    </div>
+  </div>
+  <div class="card" style="margin-bottom:18px">
+    <div class="card-title"><span class="dot" style="background:var(--yt)"></span>Recent Videos</div>
+    <div id="yt-videos"></div>
+  </div>
+
+  <!-- MEDIUM -->
+  <div class="section-heading"><span>✉️</span> Medium / Substack</div>
+  <div class="stats-4">
+    <div class="stat-card" style="border-top:2px solid var(--med)">
+      <div class="stat-label">Total Views</div>
+      <div class="stat-value" id="med-views">—</div>
+    </div>
+    <div class="stat-card" style="border-top:2px solid var(--med)">
+      <div class="stat-label">Avg Read Ratio</div>
+      <div class="stat-value" id="med-rr">—</div>
+    </div>
+    <div class="stat-card" style="border-top:2px solid var(--med)">
+      <div class="stat-label">Followers</div>
+      <div class="stat-value" id="med-fol">—</div>
+      <div class="stat-sub" id="med-fol-sub"></div>
+    </div>
+    <div class="stat-card" style="border-top:2px solid var(--med)">
+      <div class="stat-label">Issues Published</div>
+      <div class="stat-value" id="med-issues">—</div>
+    </div>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:var(--med)"></span>Views per Issue</div>
+      <canvas id="c-med-views"></canvas>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:var(--med)"></span>Follower Growth</div>
+      <canvas id="c-med-fol"></canvas>
+    </div>
+  </div>
+
+  <!-- CROSS PLATFORM -->
+  <div class="section-heading"><span>📊</span> Cross-Platform</div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Engagement Rate by Platform</div>
+      <canvas id="c-cross-eng"></canvas>
+    </div>
+    <div class="card">
+      <div class="card-title">Audience by Platform</div>
+      <canvas id="c-cross-aud"></canvas>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>Built with ❤️ by <a href="https://www.linkedin.com/in/danielamatinho/" target="_blank">Daniela Matinho</a> · <a href="https://danielamatinho.substack.com" target="_blank">AI, Actually Newsletter</a></p>
+  <p style="margin-top:6px;font-size:11px">Data updated manually · Last refresh: <span id="footer-date"></span></p>
+</footer>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════════
+//  ✏️  UPDATE THIS DATA OBJECT EVERY TIME YOU WANT TO REFRESH THE PAGE
+// ═══════════════════════════════════════════════════════════════════════
+const DATA = {
+  updatedAt: '2026-06-29',   // Date you last updated this file
+
+  linkedin: {
+    impressions: 16700,       // Total impressions
+    engagements: 231,         // Total engagements
+    engRate: 1.39,            // Avg engagement rate %
+    followers: 3132,          // Total followers
+    newFollowers: 91,         // New followers this period
+    period: 'Jun 2 – Jun 29 2026',
+    // Daily data for charts [date, impressions, engRate]
+    daily: [
+      ['06/02',480,1.1],['06/03',510,0.9],['06/04',320,1.2],['06/05',390,0.8],
+      ['06/06',540,1.4],['06/07',480,1.1],['06/08',510,0.9],['06/09',1050,1.8],
+      ['06/10',980,2.1],['06/11',1350,1.6],['06/12',1180,1.4],['06/13',1150,1.3],
+      ['06/14',610,1.0],['06/15',580,3.8],['06/16',990,2.2],['06/17',1555,1.9],
+      ['06/18',2747,0.6],['06/19',1150,1.1],['06/20',510,1.3],['06/21',490,1.2],
+      ['06/22',510,0.9],['06/23',430,1.1],['06/24',380,1.4],['06/25',120,0.8],
+      ['06/26',80,0.6],['06/27',70,0.5],['06/28',110,0.7],['06/29',490,1.6],
+    ],
+  },
+
+  youtube: {
+    views: 816,               // Total views
+    subscribers: 0,           // Total subscribers (update after connecting)
+    likes: 0,                 // Total likes
+    comments: 0,              // Total comments
+    videos: [
+      // { title, date, views, likes, comments, url }
+      // Add your videos here
+    ],
+  },
+
+  medium: {
+    totalViews: 14,           // Total views across all issues
+    avgReadRatio: 1.5,        // Avg read ratio %
+    followers: 1420,          // Total Substack followers
+    issues: 2,                // Number of issues published
+    // Issues data for charts
+    issueData: [
+      { title: 'AI Adoption Is Not the Goal', date: '2026-06-16', views: 9,  readRatio: 1 },
+      { title: 'AI, Actually — Issue 01',     date: '2026-06-23', views: 5,  readRatio: 2 },
+    ],
+    // Monthly follower data from CSV
+    followerHistory: [
+      ['2026-04',1421],['2026-05',1421],['2026-06',1420],
+    ],
+  },
+};
+// ═══════════════════════════════════════════════════════════════════════
+
+Chart.defaults.color='#7a7a90';
+Chart.defaults.font.family='Inter';
+Chart.defaults.font.size=12;
+
+function fmtR(n) {
+  // Round to nearest 100 for numbers > 1000, else nearest 10
+  if (n >= 10000) return (Math.round(n/1000)*1000).toLocaleString();
+  if (n >= 1000)  return (Math.round(n/100)*100).toLocaleString();
+  if (n >= 100)   return (Math.round(n/10)*10).toLocaleString();
+  return String(n||0);
+}
+function fmtK(n) {
+  if (n >= 1000) return (n/1000).toFixed(1)+'K';
+  return String(n||0);
+}
+
+function render() {
+  const D = DATA;
+
+  // Edit mode
+  if (window.location.search.includes('edit=1')) {
+    document.getElementById('edit-banner').classList.add('visible');
+  }
+
+  // Updated date
+  const dateStr = new Date(D.updatedAt).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+  document.getElementById('updated-date').textContent = `Updated ${dateStr}`;
+  document.getElementById('footer-date').textContent = dateStr;
+
+  // ── HERO ──
+  const total = D.linkedin.followers + D.youtube.subscribers + D.medium.followers;
+  document.getElementById('hero-total').innerHTML = fmtK(total).replace(/(\d)/,'<span>$1</span>');
+  document.getElementById('hero-sub').textContent = `${fmtK(D.linkedin.followers)} LinkedIn + ${fmtK(D.youtube.subscribers)} YouTube + ${fmtK(D.medium.followers)} Medium`;
+  document.getElementById('h-li-fol').textContent  = fmtK(D.linkedin.followers);
+  document.getElementById('h-yt-subs').textContent = fmtK(D.youtube.subscribers);
+  document.getElementById('h-med-fol').textContent = fmtK(D.medium.followers);
+
+  // ── LINKEDIN ──
+  document.getElementById('li-imp').textContent  = fmtK(D.linkedin.impressions);
+  document.getElementById('li-imp-sub').textContent = D.linkedin.period;
+  document.getElementById('li-eng').textContent  = fmtK(D.linkedin.engagements);
+  document.getElementById('li-eng-sub').textContent = D.linkedin.period;
+  document.getElementById('li-rate').textContent = D.linkedin.engRate.toFixed(2)+'%';
+  document.getElementById('li-fol').textContent  = fmtK(D.linkedin.followers);
+  document.getElementById('li-fol-sub').textContent = `+${D.linkedin.newFollowers} this period`;
+
+  // LinkedIn impressions chart
+  new Chart(document.getElementById('c-li-imp').getContext('2d'),{
+    type:'bar',
+    data:{labels:D.linkedin.daily.map(d=>d[0]),datasets:[{data:D.linkedin.daily.map(d=>d[1]),backgroundColor:'rgba(14,165,233,.5)',borderColor:'#0ea5e9',borderWidth:1,borderRadius:3}]},
+    options:{plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{color:'#7a7a90',maxTicksLimit:14}},y:{grid:{color:'#2a2a35'},ticks:{color:'#7a7a90',callback:v=>v>=1000?(v/1000).toFixed(0)+'K':v}}}}
+  });
+
+  // LinkedIn engagement rate chart
+  new Chart(document.getElementById('c-li-eng').getContext('2d'),{
+    type:'line',
+    data:{labels:D.linkedin.daily.map(d=>d[0]),datasets:[{data:D.linkedin.daily.map(d=>d[2]),borderColor:'#7c6ef7',backgroundColor:'rgba(124,110,247,.1)',fill:true,tension:.3,borderWidth:2,pointRadius:2}]},
+    options:{plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{color:'#7a7a90',maxTicksLimit:14}},y:{grid:{color:'#2a2a35'},ticks:{color:'#7a7a90',callback:v=>v+'%'}}}}
+  });
+
+  // ── YOUTUBE ──
+  document.getElementById('yt-views').textContent    = fmtK(D.youtube.views);
+  document.getElementById('yt-views-sub').textContent = `${D.youtube.videos.length} videos`;
+  document.getElementById('yt-subs').textContent     = fmtK(D.youtube.subscribers);
+  document.getElementById('yt-likes').textContent    = fmtK(D.youtube.likes);
+  document.getElementById('yt-comments').textContent = fmtK(D.youtube.comments);
+
+  // YouTube videos table
+  const ytVids = D.youtube.videos;
+  document.getElementById('yt-videos').innerHTML = ytVids.length
+    ? `<table style="width:100%;border-collapse:collapse;font-size:13px">
+        <thead><tr>${['Date','Title','Views','Likes','Comments'].map(h=>`<th style="text-align:left;padding:8px 10px;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;border-bottom:1px solid var(--border)">${h}</th>`).join('')}</tr></thead>
+        <tbody>${ytVids.map(v=>`<tr>
+          <td style="padding:10px;border-bottom:1px solid var(--border);color:var(--muted);white-space:nowrap">${v.date}</td>
+          <td style="padding:10px;border-bottom:1px solid var(--border)">${v.url?`<a href="${v.url}" target="_blank" style="color:var(--accent)">${v.title}</a>`:v.title}</td>
+          <td style="padding:10px;border-bottom:1px solid var(--border)">${fmtK(v.views)}</td>
+          <td style="padding:10px;border-bottom:1px solid var(--border)">${fmtK(v.likes)}</td>
+          <td style="padding:10px;border-bottom:1px solid var(--border)">${fmtK(v.comments)}</td>
+        </tr>`).join('')}</tbody>
+      </table>`
+    : '<div style="text-align:center;padding:24px;color:var(--muted);font-size:13px">No videos added yet — update the DATA object to add your videos</div>';
+
+  // ── MEDIUM ──
+  document.getElementById('med-views').textContent  = fmtK(D.medium.totalViews);
+  document.getElementById('med-rr').textContent     = D.medium.avgReadRatio.toFixed(1)+'%';
+  document.getElementById('med-fol').textContent    = fmtK(D.medium.followers);
+  document.getElementById('med-fol-sub').textContent = 'Substack followers';
+  document.getElementById('med-issues').textContent = D.medium.issues;
+
+  // Medium views chart
+  new Chart(document.getElementById('c-med-views').getContext('2d'),{
+    type:'bar',
+    data:{labels:D.medium.issueData.map(i=>i.date.slice(5)),datasets:[{data:D.medium.issueData.map(i=>i.views),backgroundColor:'rgba(245,166,35,.6)',borderColor:'#f5a623',borderWidth:1,borderRadius:3}]},
+    options:{plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{color:'#7a7a90'}},y:{grid:{color:'#2a2a35'},ticks:{color:'#7a7a90'}}}}
+  });
+
+  // Medium follower history
+  new Chart(document.getElementById('c-med-fol').getContext('2d'),{
+    type:'line',
+    data:{labels:D.medium.followerHistory.map(d=>d[0]),datasets:[{data:D.medium.followerHistory.map(d=>d[1]),borderColor:'#f5a623',backgroundColor:'rgba(245,166,35,.1)',fill:true,tension:.3,borderWidth:2,pointRadius:4}]},
+    options:{plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{color:'#7a7a90'}},y:{grid:{color:'#2a2a35'},ticks:{color:'#7a7a90'}}}}
+  });
+
+  // ── CROSS PLATFORM ──
+  const liRate = D.linkedin.engRate;
+  const ytRate = D.youtube.views ? (D.youtube.likes+D.youtube.comments)/D.youtube.views*100 : 0;
+  const medRate = D.medium.avgReadRatio;
+  new Chart(document.getElementById('c-cross-eng').getContext('2d'),{
+    type:'bar',
+    data:{labels:['LinkedIn','YouTube','Medium'],datasets:[{data:[liRate,ytRate,medRate],backgroundColor:['rgba(14,165,233,.7)','rgba(255,68,68,.7)','rgba(245,166,35,.7)'],borderRadius:6,borderSkipped:false}]},
+    options:{plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{color:'#7a7a90'}},y:{grid:{color:'#2a2a35'},ticks:{color:'#7a7a90',callback:v=>v.toFixed(1)+'%'}}}}
+  });
+
+  new Chart(document.getElementById('c-cross-aud').getContext('2d'),{
+    type:'doughnut',
+    data:{labels:['LinkedIn','YouTube','Medium'],datasets:[{data:[D.linkedin.followers,D.youtube.subscribers,D.medium.followers],backgroundColor:['rgba(14,165,233,.8)','rgba(255,68,68,.8)','rgba(245,166,35,.8)'],borderColor:'#17171e',borderWidth:3}]},
+    options:{plugins:{legend:{position:'bottom',labels:{color:'#7a7a90',padding:16,boxWidth:12}}},cutout:'65%'}
+  });
+}
+
+render();
+</script>
+</body>
+</html>
