@@ -238,52 +238,33 @@
 //  ✏️  UPDATE THIS DATA OBJECT EVERY TIME YOU WANT TO REFRESH THE PAGE
 // ═══════════════════════════════════════════════════════════════════════
 const DATA = {
-  updatedAt: '2026-06-29',   // Date you last updated this file
+  updatedAt: '2026-06-29',
 
   linkedin: {
-    impressions: 16700,       // Total impressions
-    engagements: 231,         // Total engagements
-    engRate: 1.39,            // Avg engagement rate %
-    followers: 3132,          // Total followers
-    newFollowers: 91,         // New followers this period
-    period: 'Jun 2 – Jun 29 2026',
-    // Daily data for charts [date, impressions, engRate]
-    daily: [
-      ['06/02',480,1.1],['06/03',510,0.9],['06/04',320,1.2],['06/05',390,0.8],
-      ['06/06',540,1.4],['06/07',480,1.1],['06/08',510,0.9],['06/09',1050,1.8],
-      ['06/10',980,2.1],['06/11',1350,1.6],['06/12',1180,1.4],['06/13',1150,1.3],
-      ['06/14',610,1.0],['06/15',580,3.8],['06/16',990,2.2],['06/17',1555,1.9],
-      ['06/18',2747,0.6],['06/19',1150,1.1],['06/20',510,1.3],['06/21',490,1.2],
-      ['06/22',510,0.9],['06/23',430,1.1],['06/24',380,1.4],['06/25',120,0.8],
-      ['06/26',80,0.6],['06/27',70,0.5],['06/28',110,0.7],['06/29',490,1.6],
-    ],
+    impressions: 16667,
+    engagements: 231,
+    engRate: 1.39,
+    followers: 3132,
+    newFollowers: NaN,
+    period: '6/2/2026 - 6/29/2026',
+    daily: [["06/02",19,0],["06/03",7,0],["06/04",45,0],["06/05",52,0],["06/06",23,0],["06/07",62,0],["06/08",54,0],["06/09",528,2.27],["06/10",482,2.28],["06/11",388,1.55],["06/12",768,0.91],["06/13",291,0.69],["06/14",55,0],["06/15",613,3.75],["06/16",955,2.62],["06/17",1555,1.35],["06/18",1161,1.03],["06/19",1180,1.02],["06/20",548,0.91],["06/21",343,1.75],["06/22",590,1.02],["06/23",970,1.55],["06/24",781,1.41],["06/25",874,1.6],["06/26",930,1.08],["06/27",530,1.32],["06/28",279,2.87],["06/29",2584,0.7]],
   },
 
   youtube: {
-    views: 816,               // Total views
-    subscribers: 0,           // Total subscribers (update after connecting)
-    likes: 0,                 // Total likes
-    comments: 0,              // Total comments
-    videos: [
-      // { title, date, views, likes, comments, url }
-      // Add your videos here
-    ],
+    views: 816,
+    subscribers: 333,
+    likes: 52,
+    comments: 6,
+    videos: [{"title":"This resume got me 11+ interviews with major tech companies","date":"2025-03-23","views":83,"likes":6,"comments":1,"url":"https://youtube.com/watch?v=Ju0rA82vULs"},{"title":"Resume Hacks  | How to write your resume using chatgpt","date":"2025-03-16","views":270,"likes":6,"comments":2,"url":"https://youtube.com/watch?v=d2hcH-ja_Cg"},{"title":"How to actually get a job today","date":"2025-02-09","views":128,"likes":6,"comments":1,"url":"https://youtube.com/watch?v=RV1qL0k87do"},{"title":"The highest paying tech jobs this year","date":"2024-11-25","views":99,"likes":13,"comments":2,"url":"https://youtube.com/watch?v=NQnxbgsbvkw"},{"title":"How to find a job in 2025","date":"2024-11-03","views":236,"likes":21,"comments":0,"url":"https://youtube.com/watch?v=K_8i3Su0Unc"}],
   },
 
   medium: {
-    totalViews: 14,           // Total views across all issues
-    avgReadRatio: 1.5,        // Avg read ratio %
-    followers: 1420,          // Total Substack followers
-    issues: 2,                // Number of issues published
-    // Issues data for charts
-    issueData: [
-      { title: 'AI Adoption Is Not the Goal', date: '2026-06-16', views: 9,  readRatio: 1 },
-      { title: 'AI, Actually — Issue 01',     date: '2026-06-23', views: 5,  readRatio: 2 },
-    ],
-    // Monthly follower data from CSV
-    followerHistory: [
-      ['2026-04',1421],['2026-05',1421],['2026-06',1420],
-    ],
+    totalViews: 14,
+    avgReadRatio: 1.5,
+    followers: 1420,
+    issues: 2,
+    issueData: [{"title":"AI Adoption Is Not the Goal","date":"2026-06-16","views":9,"readRatio":1},{"title":"AI, Actually — Issue 01","date":"2026-06-23","views":5,"readRatio":2}],
+    followerHistory: [["2023-01",11],["2023-02",21],["2023-03",65],["2023-04",67],["2023-05",69],["2023-06",71],["2023-07",73],["2023-08",73],["2023-09",74],["2023-10",78],["2023-11",90],["2023-12",93],["2024-01",111],["2024-02",257],["2024-03",462],["2024-04",925],["2024-05",1183],["2024-06",1333],["2024-07",1363],["2024-08",1373],["2024-09",1381],["2024-10",1384],["2024-11",1388],["2024-12",1400],["2025-01",1409],["2025-02",1419],["2025-03",1420],["2025-04",1424],["2025-05",1424],["2025-06",1424],["2025-07",1423],["2025-08",1425],["2025-09",1424],["2025-10",1423],["2025-11",1423],["2025-12",1424],["2026-01",1424],["2026-02",1424],["2026-03",1422],["2026-04",1421],["2026-05",1421],["2026-06",1420]],
   },
 };
 // ═══════════════════════════════════════════════════════════════════════
