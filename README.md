@@ -16,4 +16,5 @@ we built a full cross-platform analytics dashboard with:
 - Public read-only version hosted on GitHub Pages
 - One-click Export for GitHub button
 
-Built by Daniela Matinho · AI, Actually Newsletter
+Powered By Claude 
+Built with ❤️‍🔥 by [Daniela Matinho](https://www.linkedin.com/in/danielamatinho) · AI, Actually Newsletter
