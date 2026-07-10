@@ -18,5 +18,5 @@ we built a full cross-platform analytics dashboard with:
 
 ---
 
-Powered By Claude
-Built with ❤️‍🔥 by [Daniela Matinho](https://www.linkedin.com/in/danielamatinho) · AI, Actually Newsletter
+- Powered By Claude
+- Built with ❤️‍🔥 by [Daniela Matinho](https://www.linkedin.com/in/danielamatinho) · AI, Actually Newsletter
