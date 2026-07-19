@@ -4,13 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI, Actually · Content Dashboard</title>
+<meta name="description" content="Cross-platform content analytics for Daniela Matinho across LinkedIn, YouTube, Medium/Substack, and optional X/Twitter exports.">
 <meta property="og:title" content="AI, Actually · Content Dashboard">
-<meta property="og:description" content="Cross-platform content analytics for Daniela Matinho — LinkedIn, YouTube & Medium/Substack">
+<meta property="og:description" content="Cross-platform content analytics for Daniela Matinho - LinkedIn, YouTube & Medium/Substack">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;500;600&display=swap');
   *{box-sizing:border-box;margin:0;padding:0}
-  :root{--bg:#0f0f13;--surface:#17171e;--surface2:#1f1f28;--border:#2a2a35;--accent:#7c6ef7;--accent2:#f97316;--accent3:#22d3a0;--text:#e8e8f0;--muted:#7a7a90;--li:#0ea5e9;--yt:#ff4444;--med:#f5a623}
+  :root{--bg:#0f0f13;--surface:#17171e;--surface2:#1f1f28;--border:#2a2a35;--accent:#7c6ef7;--accent2:#f97316;--accent3:#22d3a0;--text:#e8e8f0;--muted:#7a7a90;--li:#0ea5e9;--yt:#ff4444;--med:#f5a623;--x:#e8e8f0}
   body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 
   header{padding:28px 48px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
@@ -62,6 +63,7 @@
   .badge-li{background:rgba(14,165,233,.15);color:var(--li)}
   .badge-yt{background:rgba(255,68,68,.15);color:var(--yt)}
   .badge-med{background:rgba(245,166,35,.15);color:var(--med)}
+  .badge-x{background:rgba(232,232,240,.12);color:var(--x)}
 
   /* Footer */
   footer{text-align:center;padding:32px;border-top:1px solid var(--border);margin-top:40px;color:var(--muted);font-size:12px}
@@ -84,7 +86,7 @@
 
 <!-- ── EDIT BANNER (shown when ?edit=1 in URL) ── -->
 <div class="edit-banner" id="edit-banner">
-  ✏️ You are in edit mode — update the DATA object in the HTML source to refresh numbers.
+  ✏️ You are in edit mode - update the DATA object in the HTML source to refresh numbers.
 </div>
 
 <header>
@@ -101,21 +103,25 @@
   <div class="hero">
     <div class="hero-left">
       <h2>Total Audience</h2>
-      <div class="hero-total" id="hero-total">—</div>
+      <div class="hero-total" id="hero-total">&mdash;</div>
       <div class="hero-sub" id="hero-sub"></div>
     </div>
     <div class="hero-platforms">
       <div class="hero-plat">
-        <div class="val" style="color:var(--li)" id="h-li-fol">—</div>
+        <div class="val" style="color:var(--li)" id="h-li-fol">&mdash;</div>
         <div class="lbl">💼 LinkedIn</div>
       </div>
       <div class="hero-plat">
-        <div class="val" style="color:var(--yt)" id="h-yt-subs">—</div>
+        <div class="val" style="color:var(--yt)" id="h-yt-subs">&mdash;</div>
         <div class="lbl">▶️ YouTube</div>
       </div>
       <div class="hero-plat">
-        <div class="val" style="color:var(--med)" id="h-med-fol">—</div>
+        <div class="val" style="color:var(--med)" id="h-med-fol">&mdash;</div>
         <div class="lbl">✉️ Medium</div>
+      </div>
+      <div class="hero-plat">
+        <div class="val" style="color:var(--x)" id="h-x-fol">&mdash;</div>
+        <div class="lbl">𝕏 X/Twitter</div>
       </div>
     </div>
   </div>
@@ -125,22 +131,22 @@
   <div class="stats-4">
     <div class="stat-card" style="border-top:2px solid var(--li)">
       <div class="stat-label">Impressions</div>
-      <div class="stat-value" id="li-imp">—</div>
+      <div class="stat-value" id="li-imp">&mdash;</div>
       <div class="stat-sub" id="li-imp-sub"></div>
     </div>
     <div class="stat-card" style="border-top:2px solid var(--li)">
       <div class="stat-label">Engagements</div>
-      <div class="stat-value" id="li-eng">—</div>
+      <div class="stat-value" id="li-eng">&mdash;</div>
       <div class="stat-sub" id="li-eng-sub"></div>
     </div>
     <div class="stat-card" style="border-top:2px solid var(--li)">
       <div class="stat-label">Avg Eng Rate</div>
-      <div class="stat-value" id="li-rate">—</div>
+      <div class="stat-value" id="li-rate">&mdash;</div>
       <div class="stat-sub">Engagements / impressions</div>
     </div>
     <div class="stat-card" style="border-top:2px solid var(--li)">
       <div class="stat-label">Followers</div>
-      <div class="stat-value" id="li-fol">—</div>
+      <div class="stat-value" id="li-fol">&mdash;</div>
       <div class="stat-sub" id="li-fol-sub"></div>
     </div>
   </div>
@@ -160,20 +166,20 @@
   <div class="stats-4">
     <div class="stat-card" style="border-top:2px solid var(--yt)">
       <div class="stat-label">Total Views</div>
-      <div class="stat-value" id="yt-views">—</div>
+      <div class="stat-value" id="yt-views">&mdash;</div>
       <div class="stat-sub" id="yt-views-sub"></div>
     </div>
     <div class="stat-card" style="border-top:2px solid var(--yt)">
       <div class="stat-label">Subscribers</div>
-      <div class="stat-value" id="yt-subs">—</div>
+      <div class="stat-value" id="yt-subs">&mdash;</div>
     </div>
     <div class="stat-card" style="border-top:2px solid var(--yt)">
       <div class="stat-label">Total Likes</div>
-      <div class="stat-value" id="yt-likes">—</div>
+      <div class="stat-value" id="yt-likes">&mdash;</div>
     </div>
     <div class="stat-card" style="border-top:2px solid var(--yt)">
       <div class="stat-label">Total Comments</div>
-      <div class="stat-value" id="yt-comments">—</div>
+      <div class="stat-value" id="yt-comments">&mdash;</div>
     </div>
   </div>
   <div class="card" style="margin-bottom:18px">
@@ -186,20 +192,20 @@
   <div class="stats-4">
     <div class="stat-card" style="border-top:2px solid var(--med)">
       <div class="stat-label">Total Views</div>
-      <div class="stat-value" id="med-views">—</div>
+      <div class="stat-value" id="med-views">&mdash;</div>
     </div>
     <div class="stat-card" style="border-top:2px solid var(--med)">
       <div class="stat-label">Avg Read Ratio</div>
-      <div class="stat-value" id="med-rr">—</div>
+      <div class="stat-value" id="med-rr">&mdash;</div>
     </div>
     <div class="stat-card" style="border-top:2px solid var(--med)">
       <div class="stat-label">Followers</div>
-      <div class="stat-value" id="med-fol">—</div>
+      <div class="stat-value" id="med-fol">&mdash;</div>
       <div class="stat-sub" id="med-fol-sub"></div>
     </div>
     <div class="stat-card" style="border-top:2px solid var(--med)">
       <div class="stat-label">Issues Published</div>
-      <div class="stat-value" id="med-issues">—</div>
+      <div class="stat-value" id="med-issues">&mdash;</div>
     </div>
   </div>
   <div class="grid-2">
@@ -212,6 +218,10 @@
       <canvas id="c-med-fol"></canvas>
     </div>
   </div>
+
+  <!-- X / TWITTER -->
+  <div class="section-heading"><span>𝕏</span> X / Twitter</div>
+  <div id="x-section"></div>
 
   <!-- CROSS PLATFORM -->
   <div class="section-heading"><span>📊</span> Cross-Platform</div>
@@ -229,8 +239,9 @@
 </div>
 
 <footer>
-  <p>Built with ❤️ by <a href="https://www.linkedin.com/in/danielamatinho/" target="_blank">Daniela Matinho</a> · <a href="https://danielamatinho.substack.com" target="_blank">AI, Actually Newsletter</a></p>
+  <p>Built with ❤️ by <a href="https://www.linkedin.com/in/danielamatinho/" target="_blank" rel="noopener noreferrer">Daniela Matinho</a> · <a href="https://danielamatinho.substack.com" target="_blank" rel="noopener noreferrer">AI, Actually Newsletter</a></p>
   <p style="margin-top:6px;font-size:11px">Data updated manually · Last refresh: <span id="footer-date"></span></p>
+  <p style="margin-top:6px;font-size:11px">Xquik is an independent third-party service. Not affiliated with X Corp. "Twitter" and "X" are trademarks of X Corp.</p>
 </footer>
 
 <script>
@@ -266,6 +277,19 @@ const DATA = {
     issueData: [{"title":"AI Adoption Is Not the Goal","date":"2026-06-16","views":12,"readRatio":3},{"title":"Four Conversations That Changed How I Think About AI Adoption","date":"2026-06-23","views":7,"readRatio":2},{"title":"If AI Adoption Isn’t the Goal, What Should We Measure Instead?","date":"2026-06-30","views":5,"readRatio":1},{"title":"More AI Tools Don’t Create More Value. Better Workflows Do","date":"2026-07-07","views":5,"readRatio":1}],
     followerHistory: [["2023-01",11],["2023-02",21],["2023-03",65],["2023-04",67],["2023-05",69],["2023-06",71],["2023-07",73],["2023-08",73],["2023-09",74],["2023-10",78],["2023-11",90],["2023-12",93],["2024-01",111],["2024-02",257],["2024-03",462],["2024-04",925],["2024-05",1183],["2024-06",1333],["2024-07",1363],["2024-08",1373],["2024-09",1381],["2024-10",1384],["2024-11",1388],["2024-12",1400],["2025-01",1409],["2025-02",1419],["2025-03",1420],["2025-04",1424],["2025-05",1424],["2025-06",1424],["2025-07",1423],["2025-08",1425],["2025-09",1424],["2025-10",1423],["2025-11",1423],["2025-12",1424],["2026-01",1424],["2026-02",1424],["2026-03",1422],["2026-04",1421],["2026-05",1421],["2026-06",1420]],
   },
+
+  x: {
+    source: 'Xquik export',
+    period: 'Add reviewed weekly X/Twitter metrics here',
+    impressions: null,
+    engagements: null,
+    engRate: null,
+    followers: null,
+    notes: [
+      'Review X/Twitter campaign activity in Xquik before publishing.',
+      'Paste weekly impressions, engagements, engagement rate, and follower count into DATA.x.',
+    ],
+  },
 };
 // ═══════════════════════════════════════════════════════════════════════
 
@@ -284,6 +308,32 @@ function fmtK(n) {
   if (n >= 1000) return (n/1000).toFixed(1)+'K';
   return String(n||0);
 }
+function isNum(n) {
+  return typeof n === 'number' && Number.isFinite(n);
+}
+function fmtOptional(n) {
+  return isNum(n) ? fmtK(n) : '\u2014';
+}
+function pctOptional(n) {
+  return isNum(n) ? n.toFixed(2)+'%' : '\u2014';
+}
+function escHTML(value) {
+  return String(value ?? '').replace(/[&<>"']/g, ch => ({
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;',
+    "'":'&#39;',
+  }[ch]));
+}
+function safeURL(value) {
+  try {
+    const url = new URL(String(value ?? ''));
+    return ['http:', 'https:'].includes(url.protocol) ? url.href : '';
+  } catch {
+    return '';
+  }
+}
 
 function render() {
   const D = DATA;
@@ -299,12 +349,15 @@ function render() {
   document.getElementById('footer-date').textContent = dateStr;
 
   // ── HERO ──
-  const total = D.linkedin.followers + D.youtube.subscribers + D.medium.followers;
+  const total = D.linkedin.followers + D.youtube.subscribers + D.medium.followers + (isNum(D.x?.followers) ? D.x.followers : 0);
   document.getElementById('hero-total').innerHTML = fmtK(total).replace(/(\d)/,'<span>$1</span>');
-  document.getElementById('hero-sub').textContent = `${fmtK(D.linkedin.followers)} LinkedIn + ${fmtK(D.youtube.subscribers)} YouTube + ${fmtK(D.medium.followers)} Medium`;
+  const audienceParts = [`${fmtK(D.linkedin.followers)} LinkedIn`, `${fmtK(D.youtube.subscribers)} YouTube`, `${fmtK(D.medium.followers)} Medium`];
+  if (isNum(D.x?.followers)) audienceParts.push(`${fmtK(D.x.followers)} X/Twitter`);
+  document.getElementById('hero-sub').textContent = audienceParts.join(' + ');
   document.getElementById('h-li-fol').textContent  = fmtK(D.linkedin.followers);
   document.getElementById('h-yt-subs').textContent = fmtK(D.youtube.subscribers);
   document.getElementById('h-med-fol').textContent = fmtK(D.medium.followers);
+  document.getElementById('h-x-fol').textContent   = fmtOptional(D.x?.followers);
 
   // ── LINKEDIN ──
   document.getElementById('li-imp').textContent  = fmtK(D.linkedin.impressions);
@@ -313,7 +366,9 @@ function render() {
   document.getElementById('li-eng-sub').textContent = D.linkedin.period;
   document.getElementById('li-rate').textContent = D.linkedin.engRate.toFixed(2)+'%';
   document.getElementById('li-fol').textContent  = fmtK(D.linkedin.followers);
-  document.getElementById('li-fol-sub').textContent = `+${D.linkedin.newFollowers} this period`;
+  document.getElementById('li-fol-sub').textContent = isNum(D.linkedin.newFollowers)
+    ? `+${D.linkedin.newFollowers} this period`
+    : 'Follower delta not imported';
 
   // LinkedIn impressions chart
   new Chart(document.getElementById('c-li-imp').getContext('2d'),{
@@ -342,14 +397,14 @@ function render() {
     ? `<table style="width:100%;border-collapse:collapse;font-size:13px">
         <thead><tr>${['Date','Title','Views','Likes','Comments'].map(h=>`<th style="text-align:left;padding:8px 10px;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;border-bottom:1px solid var(--border)">${h}</th>`).join('')}</tr></thead>
         <tbody>${ytVids.map(v=>`<tr>
-          <td style="padding:10px;border-bottom:1px solid var(--border);color:var(--muted);white-space:nowrap">${v.date}</td>
-          <td style="padding:10px;border-bottom:1px solid var(--border)">${v.url?`<a href="${v.url}" target="_blank" style="color:var(--accent)">${v.title}</a>`:v.title}</td>
+          <td style="padding:10px;border-bottom:1px solid var(--border);color:var(--muted);white-space:nowrap">${escHTML(v.date)}</td>
+          <td style="padding:10px;border-bottom:1px solid var(--border)">${safeURL(v.url)?`<a href="${safeURL(v.url)}" target="_blank" rel="noopener noreferrer" style="color:var(--accent)">${escHTML(v.title)}</a>`:escHTML(v.title)}</td>
           <td style="padding:10px;border-bottom:1px solid var(--border)">${fmtK(v.views)}</td>
           <td style="padding:10px;border-bottom:1px solid var(--border)">${fmtK(v.likes)}</td>
           <td style="padding:10px;border-bottom:1px solid var(--border)">${fmtK(v.comments)}</td>
         </tr>`).join('')}</tbody>
       </table>`
-    : '<div style="text-align:center;padding:24px;color:var(--muted);font-size:13px">No videos added yet — update the DATA object to add your videos</div>';
+    : '<div style="text-align:center;padding:24px;color:var(--muted);font-size:13px">No videos added yet - update the DATA object to add your videos</div>';
 
   // ── MEDIUM ──
   document.getElementById('med-views').textContent  = fmtK(D.medium.totalViews);
@@ -372,19 +427,54 @@ function render() {
     options:{plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{color:'#7a7a90'}},y:{grid:{color:'#2a2a35'},ticks:{color:'#7a7a90'}}}}
   });
 
+  // ── X / TWITTER ──
+  const x = D.x;
+  const xMetrics = [
+    ['Impressions', fmtOptional(x?.impressions)],
+    ['Engagements', fmtOptional(x?.engagements)],
+    ['Eng Rate', pctOptional(x?.engRate)],
+    ['Followers', fmtOptional(x?.followers)],
+  ];
+  document.getElementById('x-section').innerHTML = x
+    ? `<div class="stats-4">
+        ${xMetrics.map(([label,value])=>`<div class="stat-card" style="border-top:2px solid var(--x)">
+          <div class="stat-label">${escHTML(label)}</div>
+          <div class="stat-value">${escHTML(value)}</div>
+        </div>`).join('')}
+      </div>
+      <div class="card" style="margin-bottom:18px">
+        <div class="card-title"><span class="dot" style="background:var(--x)"></span>Xquik Source Workflow <span class="badge badge-x">${escHTML(x.source)}</span></div>
+        <div class="stat-sub" style="margin-bottom:12px">${escHTML(x.period)}</div>
+        ${(x.notes || []).map(note=>`<div class="insight-row"><div class="i-icon" style="background:rgba(232,232,240,.12)">𝕏</div><div class="i-text">${escHTML(note)}</div></div>`).join('')}
+      </div>`
+    : '<div class="card" style="margin-bottom:18px;color:var(--muted);font-size:13px">Add DATA.x to track X/Twitter exports.</div>';
+
   // ── CROSS PLATFORM ──
-  const liRate = D.linkedin.engRate;
-  const ytRate = D.youtube.views ? (D.youtube.likes+D.youtube.comments)/D.youtube.views*100 : 0;
-  const medRate = D.medium.avgReadRatio;
+  const engagementLabels = ['LinkedIn','YouTube','Medium'];
+  const engagementValues = [D.linkedin.engRate,D.youtube.views ? (D.youtube.likes+D.youtube.comments)/D.youtube.views*100 : 0,D.medium.avgReadRatio];
+  const engagementColors = ['rgba(14,165,233,.7)','rgba(255,68,68,.7)','rgba(245,166,35,.7)'];
+  if (isNum(D.x?.engRate)) {
+    engagementLabels.push('X/Twitter');
+    engagementValues.push(D.x.engRate);
+    engagementColors.push('rgba(232,232,240,.7)');
+  }
   new Chart(document.getElementById('c-cross-eng').getContext('2d'),{
     type:'bar',
-    data:{labels:['LinkedIn','YouTube','Medium'],datasets:[{data:[liRate,ytRate,medRate],backgroundColor:['rgba(14,165,233,.7)','rgba(255,68,68,.7)','rgba(245,166,35,.7)'],borderRadius:6,borderSkipped:false}]},
+    data:{labels:engagementLabels,datasets:[{data:engagementValues,backgroundColor:engagementColors,borderRadius:6,borderSkipped:false}]},
     options:{plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{color:'#7a7a90'}},y:{grid:{color:'#2a2a35'},ticks:{color:'#7a7a90',callback:v=>v.toFixed(1)+'%'}}}}
   });
 
+  const audienceLabels = ['LinkedIn','YouTube','Medium'];
+  const audienceValues = [D.linkedin.followers,D.youtube.subscribers,D.medium.followers];
+  const audienceColors = ['rgba(14,165,233,.8)','rgba(255,68,68,.8)','rgba(245,166,35,.8)'];
+  if (isNum(D.x?.followers)) {
+    audienceLabels.push('X/Twitter');
+    audienceValues.push(D.x.followers);
+    audienceColors.push('rgba(232,232,240,.8)');
+  }
   new Chart(document.getElementById('c-cross-aud').getContext('2d'),{
     type:'doughnut',
-    data:{labels:['LinkedIn','YouTube','Medium'],datasets:[{data:[D.linkedin.followers,D.youtube.subscribers,D.medium.followers],backgroundColor:['rgba(14,165,233,.8)','rgba(255,68,68,.8)','rgba(245,166,35,.8)'],borderColor:'#17171e',borderWidth:3}]},
+    data:{labels:audienceLabels,datasets:[{data:audienceValues,backgroundColor:audienceColors,borderColor:'#17171e',borderWidth:3}]},
     options:{plugins:{legend:{position:'bottom',labels:{color:'#7a7a90',padding:16,boxWidth:12}}},cutout:'65%'}
   });
 }
