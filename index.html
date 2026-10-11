@@ -281,7 +281,7 @@ function fmtR(n) {
   return String(n||0);
 }
 function fmtK(n) {
-  if (n >= 1000) return (n/1000).toFixed(1)+'K';
+  if (n >= 1000) return (Math.floor(n/100)/10).toFixed(1)+'K';
   return String(n||0);
 }
 
